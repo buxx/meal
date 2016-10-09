@@ -136,3 +136,4 @@ ENV/
 .ropeproject
 
 db.sqlite3
+*~
