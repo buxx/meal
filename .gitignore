@@ -137,3 +137,4 @@ ENV/
 
 db.sqlite3
 *~
+venv*
