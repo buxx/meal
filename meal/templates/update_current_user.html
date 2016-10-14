@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% load i18n %}
+
+{% block content %}
+    <form action="" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        {% include "include/form.html" with form=form %}
+
+        <button type="submit" class="btn btn-success">
+            {% trans "Enregistrer" %}
+        </button>
+    </form>
+{% endblock %}

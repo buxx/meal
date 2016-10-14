@@ -1,0 +1,34 @@
+{% load i18n %}
+
+{% for error in form.non_field_errors %}
+    <p>{{error}}</p>
+{% endfor %}
+
+{% for hidden in form.hidden_fields %}
+    {{ hidden }}
+{% endfor %}
+
+{% for field in form.visible_fields %}
+    <div class="{{ field.label|slugify }}{% if field.errors %} has-error{% endif %}">
+
+        <label for="{{ field.id_for_label }}" class="control-label">
+            {{ field.label }} :
+        </label>
+
+        {{ field }}
+
+        {% if field.help_text %}
+            <small class="help-block">{{ field.help_text }}</small>
+        {% endif %}
+
+        {% if field.errors %}
+            {% for error in field.errors %}
+                {% if not forloop.first %}
+                    <br/>
+                {% endif %}
+                <small class="help-block">{{ error }}</small>
+            {% endfor %}
+        {% endif %}
+
+    </div>
+{% endfor %}

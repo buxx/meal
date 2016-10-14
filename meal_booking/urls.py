@@ -18,8 +18,11 @@ from django.conf.urls import include
 from django.contrib import admin
 import debug_toolbar
 
+from meal.views import EditCurrentUserView
+
 urlpatterns = [
     url(r'^__debug__/', include(debug_toolbar.urls)),
     url(r'^admin/', admin.site.urls),
     url(r'^accounts/', include('allauth.urls')),
+    url(r'^accounts/profile/$', EditCurrentUserView.as_view(), name='edit_current_user'),
 ]
