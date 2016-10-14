@@ -15,7 +15,7 @@ class User(AbstractUser):
 
 
 class Group(models.Model):
-    last_name = models.CharField(
+    name = models.CharField(
         max_length=255,
         unique=True,
         verbose_name=_('Nom'),
@@ -30,3 +30,12 @@ class Group(models.Model):
         null=False,
     )
 
+    def __str__(self):
+        return self.name
+
+    @property
+    def members_str(self):
+        members_str = ', '.join([user.get_full_name() for user in self.members.all()])
+        if not members_str:
+            return ', '.join([user.email for user in self.members.all()])
+        return members_str
