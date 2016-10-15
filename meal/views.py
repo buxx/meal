@@ -7,11 +7,16 @@ from django.urls import reverse
 from django.urls import reverse_lazy
 from django.utils.decorators import method_decorator
 from django.views import generic
+from allauth.account.views import LoginView as BaseLoginView
 
 from meal.forms import CurrentUserForm
 from meal.forms import CreateGroupForm
 from meal.models import User
 from meal.models import Group
+
+
+class LoginView(BaseLoginView):
+    success_url = reverse_lazy('home')
 
 
 @method_decorator(login_required, name='dispatch')
