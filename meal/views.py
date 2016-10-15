@@ -61,6 +61,11 @@ class CreateGroupView(generic.CreateView):
     model = Group
 
     def get_success_url(self):
+        messages.add_message(
+            self.request,
+            level=messages.SUCCESS,
+            message=_('Groupe créé et assigné avec succès'),
+        )
         return reverse_lazy('home')
 
     def form_valid(self, form):
