@@ -1,3 +1,5 @@
+from django.shortcuts import redirect
+from django.urls import reverse
 from django.urls import reverse_lazy
 from django.views import generic
 
@@ -13,3 +15,16 @@ class EditCurrentUserView(generic.UpdateView):
 
     def get_object(self, queryset=None):
         return self.request.user
+
+
+def index_view(request):
+    if request.user.is_authenticated:
+        return redirect(reverse('home'))
+    return redirect(reverse('account_login'))
+
+
+class HomeView(generic.TemplateView):
+    template_name = 'home.html'
+
+    def get_context_data(self, **kwargs):
+        return {}

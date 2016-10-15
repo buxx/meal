@@ -19,10 +19,14 @@ from django.contrib import admin
 import debug_toolbar
 
 from meal.views import EditCurrentUserView
+from meal.views import index_view
+from meal.views import HomeView
 
 urlpatterns = [
+    url(r'^$', index_view, name='index'),
     url(r'^__debug__/', include(debug_toolbar.urls)),
     url(r'^admin/', admin.site.urls),
     url(r'^accounts/', include('allauth.urls')),
     url(r'^accounts/profile/$', EditCurrentUserView.as_view(), name='edit_current_user'),
+    url(r'^account/home/$', HomeView.as_view(), name='home')
 ]
