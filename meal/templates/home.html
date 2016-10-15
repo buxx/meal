@@ -9,7 +9,12 @@
 
     <ul>
         <li>
-            <span>{% trans 'Nom' %}</span>: {{ user.get_full_name }}
+            <span>{% trans 'Nom' %}</span>:
+            {% if user.get_full_name %}
+                {{ user.get_full_name }}
+            {% else %}
+                <strong>{% trans 'Veuillez renseigner votre nom' %}</strong>
+            {% endif %}
         </li>
         <li>
             <span>{% trans 'Email' %}</span>: {{ user.email }}
