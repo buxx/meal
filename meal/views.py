@@ -1,3 +1,4 @@
+from django.http import HttpResponseRedirect
 from django.utils.translation import ugettext as _
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
@@ -8,7 +9,9 @@ from django.utils.decorators import method_decorator
 from django.views import generic
 
 from meal.forms import CurrentUserForm
+from meal.forms import CreateGroupForm
 from meal.models import User
+from meal.models import Group
 
 
 @method_decorator(login_required, name='dispatch')
@@ -44,3 +47,25 @@ class HomeView(generic.TemplateView):
         return {
             'user': self.request.user,
         }
+
+
+@method_decorator(login_required, name='dispatch')
+class CreateGroupView(generic.CreateView):
+    template_name = 'create_group.html'
+    form_class = CreateGroupForm
+    model = Group
+
+    def get_success_url(self):
+        return reverse_lazy('home')
+
+    def form_valid(self, form):
+        group = form.save(commit=False)
+        group.creator = self.request.user
+        group.save()
+
+        group.members = [self.request.user]
+        group.save()
+
+        self.object = group
+
+        return HttpResponseRedirect(self.get_success_url())

@@ -1,4 +1,5 @@
 from meal.models import User
+from meal.models import Group
 from meal_booking.forms import ModelForm
 from meal_booking.forms import RequiredFieldsMixin
 
@@ -14,4 +15,15 @@ class CurrentUserForm(RequiredFieldsMixin, ModelForm):
         fields_required = (
             'first_name',
             'last_name',
+        )
+
+
+class CreateGroupForm(RequiredFieldsMixin, ModelForm):
+    class Meta:
+        model = Group
+        fields = (
+            'name',
+        )
+        fields_required = (
+            'name',
         )
