@@ -138,3 +138,4 @@ ENV/
 db.sqlite3
 *~
 venv*
+.idea/dataSources/
