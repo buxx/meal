@@ -1,0 +1,27 @@
+{% load i18n %}
+
+<nav class="navbar navbar-default">
+    <div class="container-fluid">
+      <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+        <span class="sr-only">{% trans 'Ouvrir le menu' %}</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="/">{% trans 'Index' %}</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        {% if user.is_authenticated %}
+            <li><a href="{% url 'account_email' %}">{% trans "Changer d\'email" %}</a></li>
+            <li><a href="{% url 'account_logout' %}">{% trans "Se déconnecter" %}</a></li>
+        {% else %}
+            <li><a href="{% url 'account_login' %}">{% trans "S'identifier" %}</a></li>
+            <li><a href="{% url 'account_signup' %}">{% trans "S'inscrire" %}</a></li>
+        {% endif %}
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div>
+</nav>
+<div style="clear: both;"></div>
