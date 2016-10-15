@@ -46,3 +46,13 @@ class ModelForm(forms.ModelForm):
             setattr(self.instance, related_name, self.cleaned_data[related_name])
 
         return super().save(commit=commit)
+
+
+class RequiredFieldsMixin(object):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        fields_required = getattr(self.Meta, 'fields_required', None)
+        if fields_required:
+            for key in self.fields:
+                self.fields[key].required = key in fields_required

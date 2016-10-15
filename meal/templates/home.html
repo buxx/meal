@@ -1,5 +1,31 @@
 {% extends 'base.html' %}
+{% load i18n %}
 
 {% block content %}
+
+    <h1>
+        {% trans 'Mon compte' %}
+    </h1>
+
+    <ul>
+        <li>
+            <span>{% trans 'Nom' %}</span>: {{ user.get_full_name }}
+        </li>
+        <li>
+            <span>{% trans 'Email' %}</span>: {{ user.email }}
+        </li>
+        <li>
+            <span>{% trans 'Groupe' %}</span>:
+            {% if user.group %}
+                {{ user.group.name }}
+            {% else %}
+                {% trans 'Aucun' %}
+            {% endif %}
+        </li>
+    </ul>
+
+    <a class="btn btn-default" href="{% url 'edit_current_user' %}" role="button">
+        {% trans 'Modifier mon compte' %}
+    </a>
 
 {% endblock %}
