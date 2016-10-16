@@ -1,4 +1,5 @@
 from django import forms
+from django.contrib.admin.widgets import AdminDateWidget
 from django.core.exceptions import ValidationError
 from django.utils.translation import ugettext as _
 
@@ -37,9 +38,11 @@ class CreateGroupForm(RequiredFieldsMixin, ModelForm):
 class CreateDaysForm(forms.Form):
     start_day = forms.DateField(
         required=True,
+        widget=AdminDateWidget,
     )
     end_day = forms.DateField(
         required=True,
+        widget=AdminDateWidget,
     )
     price = forms.CharField(
         max_length=5,
