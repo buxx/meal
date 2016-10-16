@@ -39,3 +39,24 @@ class Group(models.Model):
         if not members_str:
             return ', '.join([user.email for user in self.members.all()])
         return members_str
+
+
+class Day(models.Model):
+    date = models.DateField(
+        unique=True,
+        null=False,
+        blank=False,
+        verbose_name=_('Jour réservable'),
+        error_messages={
+            'unique': _('Ce jour existe déjà'),
+        }
+    )
+    cancelled = models.BooleanField(
+        null=False,
+        default=False,
+    )
+    price = models.CharField(
+        max_length=255,
+        null=False,
+        blank=False,
+    )

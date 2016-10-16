@@ -1,7 +1,9 @@
 from django import forms
 from django.contrib import admin
 
-from meal.models import Group, User
+from meal.models import Group
+from meal.models import User
+from meal.models import Day
 from meal_booking.forms import ModelForm
 
 
@@ -32,5 +34,14 @@ class UserAdmin(admin.ModelAdmin):
         'last_name',
     )
 
+
+class DayAdmin(admin.ModelAdmin):
+    fields = ('date', 'cancelled', 'price')
+    list_display = ('date', 'cancelled', 'price')
+    search_fields = (
+        'date',
+    )
+
 admin.site.register(Group, GroupAdmin)
 admin.site.register(User, UserAdmin)
+admin.site.register(Day, DayAdmin)
