@@ -2,6 +2,7 @@ from django.http import HttpResponseRedirect
 from django.utils.translation import ugettext as _
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import permission_required
 from django.shortcuts import redirect
 from django.urls import reverse
 from django.urls import reverse_lazy
@@ -79,3 +80,11 @@ class CreateGroupView(generic.CreateView):
         self.object = group
 
         return HttpResponseRedirect(self.get_success_url())
+
+
+@method_decorator(permission_required('admin'), name='dispatch')
+class CreateDays(generic.TemplateView):
+    template_name = 'admin/meal/day/create_days.html'
+
+    def get_context_data(self, **kwargs):
+        return {}
