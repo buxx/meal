@@ -12,6 +12,11 @@ https://docs.djangoproject.com/en/1.10/ref/settings/
 
 import os
 
+from meal_booking.utils import DAY_LUN
+from meal_booking.utils import DAY_MAR
+from meal_booking.utils import DAY_JEU
+from meal_booking.utils import DAY_VEN
+
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -123,6 +128,13 @@ AUTH_USER_MODEL = 'meal.User'
 ACCOUNT_USERNAME_REQUIRED = False
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_AUTHENTICATION_METHOD = 'email'
+
+AVAILABLE_DAYS = WEEK_DAYS = (
+    DAY_LUN,
+    DAY_MAR,
+    DAY_JEU,
+    DAY_VEN,
+)
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.10/topics/i18n/

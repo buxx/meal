@@ -1,3 +1,8 @@
+from copy import copy
+from datetime import timedelta
+
+from django.conf import settings
+from django.db import IntegrityError
 from django.http import HttpResponseRedirect
 from django.utils.translation import ugettext as _
 from django.contrib import messages
@@ -11,8 +16,10 @@ from django.views import generic
 from allauth.account.views import LoginView as BaseLoginView
 
 from meal.forms import CurrentUserForm
+from meal.forms import CreateDaysForm
 from meal.forms import CreateGroupForm
 from meal.models import User
+from meal.models import Day
 from meal.models import Group
 
 
@@ -83,8 +90,73 @@ class CreateGroupView(generic.CreateView):
 
 
 @method_decorator(permission_required('admin'), name='dispatch')
-class CreateDays(generic.TemplateView):
+class CreateDays(generic.FormView):
     template_name = 'admin/meal/day/create_days.html'
+    form_class = CreateDaysForm
+    success_url = '/admin/meal/day/'  # TODO: ? reverse_lazy('admin.days')
 
-    def get_context_data(self, **kwargs):
-        return {}
+    def get_initial(self) -> dict:
+        return {
+            'price': '8,50',  # TODO: In admin config
+            'days': settings.AVAILABLE_DAYS,  # TODO: In admin config
+        }
+
+    def form_valid(self, form):
+        end_day = form.cleaned_data['end_day']
+        start_day = form.cleaned_data['start_day']
+        time_delta = end_day - start_day
+        one_day = timedelta(days=1)
+        days = []
+
+        current_date = copy(start_day)
+        for i in range(time_delta.days+1):
+            if str(current_date.weekday()) not in form.cleaned_data['days']:
+                # This day is not in selected days
+                current_date += one_day
+                continue
+
+            days.append(Day(
+                date=current_date,
+                price=form.cleaned_data['price'],
+            ))
+            current_date += one_day
+
+        already_exists_days = []
+        created_days = []
+
+        # TODO savemultiple at once ?
+        for day in days:
+            try:
+                day.save()
+                created_days.append(day)
+            except IntegrityError:
+                already_exists_days.append(day)
+
+        if not already_exists_days:
+            messages.add_message(
+                self.request,
+                level=messages.SUCCESS,
+                message=_('{0} jour(s) ont été créé(s)'
+                          .format(len(created_days))),
+            )
+        elif created_days:
+            messages.add_message(
+                self.request,
+                level=messages.WARNING,
+                message=_(
+                    '{0} existaient déjà mais '
+                    '{1} jour(s) ont été créé(s)'
+                    .format(
+                        len(already_exists_days),
+                        len(created_days),
+                    )),
+            )
+        else:
+            messages.add_message(
+                self.request,
+                level=messages.ERROR,
+                message=_('Aucun jour n\'a été créé: Il ou ils '
+                          'existaient déjà')
+            )
+
+        return redirect(self.get_success_url())

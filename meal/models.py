@@ -60,3 +60,7 @@ class Day(models.Model):
         null=False,
         blank=False,
     )
+
+    @property
+    def active(self):
+        return not self.cancelled

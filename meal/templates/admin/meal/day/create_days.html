@@ -2,5 +2,13 @@
 {% load i18n %}
 
 {% block content %}
-    hello
+
+    <h1>{% trans 'Ajouter des jours' %}</h1>
+
+    <div id="content-main">
+        <form action="{% url 'admin.create_days' %}" method="post" novalidate>
+            {% include 'include/admin_form.html' with form=form %}
+        </form>
+    </div>
+
 {% endblock %}
