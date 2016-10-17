@@ -14,6 +14,9 @@
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         {% if user.is_authenticated %}
+            {% if request.user.is_superuser %}
+                <li><a href="{% url 'admin:index' %}">{% trans "Administration" %}</a></li>
+            {% endif %}
             <li><a href="{% url 'home' %}">{% trans "Mon compte" %}</a></li>
             <li><a href="{% url 'reservations' %}">{% trans "Réservations" %}</a></li>
             <li><a href="{% url 'account_email' %}">{% trans "Changer d'email" %}</a></li>
