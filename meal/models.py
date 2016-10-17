@@ -1,7 +1,19 @@
-from django.contrib.auth.models import UserManager
 from django.utils.translation import ugettext as _
 from django.contrib.auth.models import AbstractUser
 from django.db import models
+
+RESERVATION_STATE_WAITING_PAYMENT = 'WAITING_PAYMENT'
+RESERVATION_STATE_RESERVED = 'RESERVED'
+RESERVATION_STATE_CANCELLED_BY_USER = 'CANCELLED_BY_USER'
+RESERVATION_STATE_CANCELLED_BY_ADMIN = 'CANCELLED_BY_ADMIN'
+RESERVATION_STATE_CANCELLED_BY_UNPAYMENT = 'CANCELLED_BY_UNPAYMENT'
+RESERVATION_STATES = (
+    (RESERVATION_STATE_WAITING_PAYMENT, _('Attente de paiement')),
+    (RESERVATION_STATE_RESERVED, _('Réservé')),
+    (RESERVATION_STATE_CANCELLED_BY_USER, _('Annulé (Client)')),
+    (RESERVATION_STATE_CANCELLED_BY_ADMIN, _('Annulé (Admin)')),
+    (RESERVATION_STATE_CANCELLED_BY_UNPAYMENT, _('Annulé (Pas de paiement)')),
+)
 
 
 class User(AbstractUser):
@@ -61,6 +73,35 @@ class Day(models.Model):
         blank=False,
     )
 
+    class Meta:
+        ordering = ('date',)
+
     @property
     def active(self):
         return not self.cancelled
+
+    def __str__(self):
+        return str(self.date)
+
+
+class Reservation(models.Model):
+    state = models.CharField(
+        max_length=255,
+        null=False,
+        blank=False,
+        choices=RESERVATION_STATES,
+    )
+    user = models.ForeignKey(
+        User,
+        null=False,
+        blank=False,
+        related_name='reservations',
+        verbose_name=_('Utilisateur'),
+    )
+    day = models.ForeignKey(
+        Day,
+        null=False,
+        blank=False,
+        related_name='reservations',
+        verbose_name=_('Jour'),
+    )

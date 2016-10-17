@@ -2,6 +2,7 @@ from django import forms
 from django.contrib import admin
 
 from meal.models import Group
+from meal.models import Reservation
 from meal.models import User
 from meal.models import Day
 from meal_booking.forms import ModelForm
@@ -42,6 +43,13 @@ class DayAdmin(admin.ModelAdmin):
         'date',
     )
 
+
+class ReservationAdmin(admin.ModelAdmin):
+    fields = ('day', 'user', 'state')
+    list_display = ('day', 'user', 'state')
+    #  TODO: utiliser un champ date dans le day
+
 admin.site.register(Group, GroupAdmin)
 admin.site.register(User, UserAdmin)
 admin.site.register(Day, DayAdmin)
+admin.site.register(Reservation, ReservationAdmin)
