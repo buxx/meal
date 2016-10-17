@@ -4,6 +4,7 @@ from django.core.exceptions import ValidationError
 from django.utils.translation import ugettext as _
 
 from meal.models import User
+from meal.models import Day
 from meal.models import Group
 from meal_booking.forms import ModelForm
 from meal_booking.forms import RequiredFieldsMixin
@@ -97,3 +98,15 @@ class CreateDaysForm(DaysRangeForm):
                 )
 
         return super().clean()
+
+
+class ChooseDaysForm(forms.Form):
+    days = forms.ModelMultipleChoiceField(
+        # TODO: la query set doit exclure les cancelled et ceux ou il
+        # y a count(reservations) > où réservation sont valides
+        queryset=Day.objects.filter(
+            cancelled=False,
+        ),
+        required=True,
+        widget=forms.CheckboxSelectMultiple,
+    )
