@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% load i18n %}
+
+{% block content %}
+
+    <h1>{% trans 'Mes réservations' %}</h1>
+
+    <h2>{% trans 'Nouvelles' %}</h2>
+
+    <form action="" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        {% include "include/form.html" with form=form %}
+
+        <button type="submit" class="btn btn-success">
+            {% trans "Enregistrer" %}
+        </button>
+    </form>
+
+    <h2>{% trans 'Réservations effectuées' %}</h2>
+
+    ...
+
+{% endblock %}

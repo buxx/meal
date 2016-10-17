@@ -15,6 +15,7 @@
       <ul class="nav navbar-nav">
         {% if user.is_authenticated %}
             <li><a href="{% url 'home' %}">{% trans "Mon compte" %}</a></li>
+            <li><a href="{% url 'reservations' %}">{% trans "Réservations" %}</a></li>
             <li><a href="{% url 'account_email' %}">{% trans "Changer d'email" %}</a></li>
             <li><a href="{% url 'account_logout' %}">{% trans "Se déconnecter" %}</a></li>
         {% else %}

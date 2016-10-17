@@ -16,6 +16,7 @@ from django.views import generic
 from allauth.account.views import LoginView as BaseLoginView
 
 from meal.forms import CurrentUserForm
+from meal.forms import DaysRangeForm
 from meal.forms import CreateDaysForm
 from meal.forms import CreateGroupForm
 from meal.models import User
@@ -160,3 +161,8 @@ class CreateDays(generic.FormView):
             )
 
         return redirect(self.get_success_url())
+
+
+class ReservationsView(generic.FormView):
+    form_class = DaysRangeForm
+    template_name = 'reservations.html'

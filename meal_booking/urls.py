@@ -19,6 +19,7 @@ from django.contrib import admin
 import debug_toolbar
 
 from meal.views import EditCurrentUserView
+from meal.views import ReservationsView
 from meal.views import CreateDays
 from meal.views import LoginView
 from meal.views import CreateGroupView
@@ -35,4 +36,5 @@ urlpatterns = [
     url(r'^accounts/profile/$', EditCurrentUserView.as_view(), name='edit_current_user'),
     url(r'^accounts/home/$', HomeView.as_view(), name='home'),
     url(r'^accounts/group/create/', CreateGroupView.as_view(), name='create_group'),
+    url(r'^accounts/reservations/', ReservationsView.as_view(), name='reservations'),
 ]

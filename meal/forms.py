@@ -35,7 +35,7 @@ class CreateGroupForm(RequiredFieldsMixin, ModelForm):
         )
 
 
-class CreateDaysForm(forms.Form):
+class DaysRangeForm(forms.Form):
     start_day = forms.DateField(
         required=True,
         widget=AdminDateWidget,
@@ -44,13 +44,37 @@ class CreateDaysForm(forms.Form):
         required=True,
         widget=AdminDateWidget,
     )
+    days = forms.MultipleChoiceField(
+        widget=forms.CheckboxSelectMultiple,
+        choices=WEEK_DAYS,
+    )
+
+    def clean(self):
+        if 'start_day' in self.cleaned_data and 'end_day' in self.cleaned_data:
+            if self.cleaned_data['start_day'] > self.cleaned_data['end_day']:
+                raise ValidationError(
+                    _('Dates invalides: la date de début doit précéder la date de fin'),
+                )
+
+        if 'days' in self.cleaned_data and 'start_day' in self.cleaned_data:
+            if str(self.cleaned_data['start_day'].weekday()) not in self.cleaned_data['days']:
+                raise ValidationError(
+                    _('Le jour de départ doit être un des jours de la semaine choisis'),
+                )
+
+        if 'days' in self.cleaned_data and 'end_day' in self.cleaned_data:
+            if str(self.cleaned_data['end_day'].weekday()) not in self.cleaned_data['days']:
+                raise ValidationError(
+                    _('Le jour de fin doit être un des jours de la semaine choisis'),
+                )
+
+        return super().clean()
+
+
+class CreateDaysForm(DaysRangeForm):
     price = forms.CharField(
         max_length=5,
         required=True,
-    )
-    days = forms.MultipleChoiceField(
-        #widget=forms.widgets.CheckboxChoiceInput,
-        choices=WEEK_DAYS,
     )
 
     def clean(self):
