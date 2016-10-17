@@ -1,1 +1,34 @@
-{{ field.field }}
+{% load i18n %}
+{% load meal_extras %}
+
+<div class="row">
+
+    {% if not field|length %}
+        <div class="col-md-12">
+            {% trans 'Aucune réservation possible pour le moment' %}
+        </div>
+    {% else %}
+        {% assign previous_week_number None %}
+        <div class="col-md-3">
+        <ul>
+        {% for choice in field %}
+            {% assign week_number choice.choice_label|to_date|week_number %}
+
+            {% if previous_week_number != week_number and previous_week_number != None %}
+                </ul>
+                </div>
+                <div class="col-md-3">
+                <ul>
+            {% endif %}
+
+            <li>
+                {{ choice.choice_label }} {{ choice.choice_value }} ({{ week_number }})
+            </li>
+
+            {% assign previous_week_number week_number %}
+        {% endfor %}
+        </ul>
+        </div>
+    {% endif %}
+
+</div>

@@ -104,6 +104,8 @@ class ChooseDaysForm(forms.Form):
     days = forms.ModelMultipleChoiceField(
         # TODO: la query set doit exclure les cancelled et ceux ou il
         # y a count(reservations) > où réservation sont valides
+        # TODO: Il faut aussi se debrouiller pour avoir que 2
+        # semaine dans le futur
         queryset=Day.objects.filter(
             cancelled=False,
         ),

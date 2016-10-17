@@ -190,3 +190,5 @@ class ReservationsView(generic.FormView):
             reservation.save()
 
         return redirect(reverse('reservations'))
+
+# TODO: Il y a des balises avant le html .. ?
