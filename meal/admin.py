@@ -45,8 +45,8 @@ class DayAdmin(admin.ModelAdmin):
 
 
 class ReservationAdmin(admin.ModelAdmin):
-    fields = ('day', 'user', 'state')
-    list_display = ('day', 'user', 'state')
+    fields = ('day', 'user', 'state', 'price')
+    list_display = ('day', 'user', 'state', 'price')
     #  TODO: utiliser un champ date dans le day
 
 admin.site.register(Group, GroupAdmin)

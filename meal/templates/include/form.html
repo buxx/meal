@@ -15,7 +15,11 @@
             {{ field.label }} :
         </label>
 
-        {{ field }}
+        {% if field_template %}
+            {% include field_template with field=field %}
+        {% else %}
+            {{ field }}
+        {% endif %}
 
         {% if field.help_text %}
             <small class="help-block">{{ field.help_text }}</small>

@@ -20,6 +20,8 @@ from meal.forms import ChooseDaysForm
 from meal.forms import CreateDaysForm
 from meal.forms import CreateGroupForm
 from meal.models import User
+from meal.models import Reservation
+from meal.models import RESERVATION_STATE_WAITING_PAYMENT
 from meal.models import Day
 from meal.models import Group
 
@@ -167,3 +169,24 @@ class CreateDays(generic.FormView):
 class ReservationsView(generic.FormView):
     form_class = ChooseDaysForm
     template_name = 'reservations.html'
+
+    def get_context_data(self, **kwargs):
+        kwargs['reservations'] = self.request.user.reservations.all()
+        return super().get_context_data(**kwargs)
+
+    def form_valid(self, form):
+        reservations = []
+        for day in form.cleaned_data['days']:
+            reservations.append(
+                Reservation(
+                    day=day,
+                    user=self.request.user,
+                    price=day.price,
+                    state=RESERVATION_STATE_WAITING_PAYMENT,
+                )
+            )
+
+        for reservation in reservations:
+            reservation.save()
+
+        return redirect(reverse('reservations'))

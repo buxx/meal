@@ -110,3 +110,4 @@ class ChooseDaysForm(forms.Form):
         required=True,
         widget=forms.CheckboxSelectMultiple,
     )
+    # TODO: Car il ne faut pas réserver un jour ou il y a trop de monde, jour cancel, etc

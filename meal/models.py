@@ -105,3 +105,17 @@ class Reservation(models.Model):
         related_name='reservations',
         verbose_name=_('Jour'),
     )
+    price = models.CharField(
+        max_length=255,
+        null=False,
+        blank=False,
+    )
+
+    class Meta:
+        ordering = ('day__date',)
+        # TODO: On doit pouvoir réserver un our annulé (par client)
+        unique_together = ('user', 'day',)
+
+    @property
+    def state_str(self):
+        return dict(RESERVATION_STATES)[self.state]
