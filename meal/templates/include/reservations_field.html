@@ -1,1 +1,48 @@
-{{ field.field }}
+{% load i18n %}
+{% load meal_extras %}
+
+<div class="row">
+
+    {% if not field|length %}
+        <div class="col-md-12">
+            {% trans 'Aucune réservation possible pour le moment' %}
+        </div>
+    {% else %}
+        {% assign previous_week_number None %}
+        {% assign first_choice field|first %}
+        {% assign day_date first_choice.choice_label|to_date %}
+        {% assign week_number day_date|week_number %}
+        <div class="col-md-3">
+        <h2>{% blocktrans %}Semaine {{ week_number }}{% endblocktrans %}</h2>
+        <ul>
+        {% for choice in field %}
+            {% assign day_date choice.choice_label|to_date %}
+            {% assign week_number day_date|week_number %}
+
+            {% if previous_week_number != week_number and previous_week_number != None %}
+                </ul>
+                </div>
+                <div class="col-md-3">
+                <h2>{% blocktrans %}Semaine {{ week_number }}{% endblocktrans %}</h2>
+                <ul>
+            {% endif %}
+
+            <li>
+                <input type="checkbox"
+                       name="{{ field.name }}"
+                       id="day_{{ choice.choice_value }}"
+                       {% if day_date|reserved_or_trying:user %}checked{% endif %}
+                       {% if day_date|reserved_or_trying:user %}disabled{% endif %}
+                       value="{{ choice.choice_value }}" />
+                <label for="day_{{ choice.choice_value }}">
+                    {{ day_date|date:"l d M Y" }}
+                </label>
+            </li>
+
+            {% assign previous_week_number week_number %}
+        {% endfor %}
+        </ul>
+        </div>
+    {% endif %}
+
+</div>

@@ -11,13 +11,16 @@
 {% for field in form.visible_fields %}
     <div class="{{ field.label|slugify }}{% if field.errors %} has-error{% endif %}">
 
-        <label for="{{ field.id_for_label }}" class="control-label">
-            {{ field.label }} :
-        </label>
-
         {% if field_template %}
+
             {% include field_template with field=field %}
+
         {% else %}
+
+            <label for="{{ field.id_for_label }}" class="control-label">
+                {{ field.label }} :
+            </label>
+
             {{ field }}
         {% endif %}
 
