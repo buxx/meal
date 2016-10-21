@@ -73,9 +73,9 @@ class DaysRangeForm(forms.Form):
 
 
 class CreateDaysForm(DaysRangeForm):
-    price = forms.CharField(
-        max_length=5,
+    price = forms.IntegerField(
         required=True,
+        label=_('Prix en CENTIMES'),
     )
 
     def clean(self):

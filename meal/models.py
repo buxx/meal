@@ -68,10 +68,10 @@ class Day(models.Model):
         null=False,
         default=False,
     )
-    price = models.CharField(
-        max_length=255,
+    price = models.IntegerField(
         null=False,
         blank=False,
+        verbose_name=_('Prix en CENTIMES'),
     )
 
     class Meta:
@@ -106,10 +106,10 @@ class Reservation(models.Model):
         related_name='reservations',
         verbose_name=_('Jour'),
     )
-    price = models.CharField(
-        max_length=255,
+    price = models.IntegerField(
         null=False,
         blank=False,
+        verbose_name=_('Prix en CENTIMES'),
     )
 
     class Meta:
