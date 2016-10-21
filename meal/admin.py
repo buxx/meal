@@ -2,6 +2,7 @@ from django import forms
 from django.contrib import admin
 
 from meal.models import Group
+from meal.models import Transaction
 from meal.models import Reservation
 from meal.models import User
 from meal.models import Day
@@ -49,7 +50,13 @@ class ReservationAdmin(admin.ModelAdmin):
     list_display = ('day', 'user', 'state', 'price')
     #  TODO: utiliser un champ date dans le day
 
+
+class TransactionAdmin(admin.ModelAdmin):
+    fields = ('user', 'status', 'paypal_status', 'price', 'reservations', 'ipns', 'logs')
+    list_display = ('user', 'status', 'price')
+
 admin.site.register(Group, GroupAdmin)
 admin.site.register(User, UserAdmin)
 admin.site.register(Day, DayAdmin)
 admin.site.register(Reservation, ReservationAdmin)
+admin.site.register(Transaction, TransactionAdmin)

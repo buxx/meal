@@ -139,3 +139,5 @@ db.sqlite3
 *~
 venv*
 .idea/dataSources/
+.idea/meal_booking.iml
+.idea/misc.xml

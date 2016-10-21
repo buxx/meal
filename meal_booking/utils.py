@@ -1,3 +1,5 @@
+from django.conf import settings
+from django.urls import reverse
 from django.utils.translation import ugettext_lazy as _
 
 
@@ -18,3 +20,10 @@ WEEK_DAYS = (
     (DAY_SAM, _('Samedi')),
     (DAY_DIM, _('Dimanche')),
 )
+
+
+def get_paypal_ipn_url():
+    return '{0}{1}'.format(
+        settings.PAYPAL_BASE_URL,
+        reverse('paypal-ipn'),
+    )

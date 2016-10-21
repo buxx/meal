@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% load meal_extras %}
+
+{% block content %}
+    {% assign formated_price amount|format_price %}
+
+    <h1>{% trans 'Effectuer ma réservation' %}</h1>
+
+    <ul>
+        {% for reservation in reservations %}
+            <li>
+                {% assign formated_date reservation.day.date|date %}
+                {% blocktrans %}
+                    Réservation du {{ formated_date }}
+                {% endblocktrans %}
+            </li>
+        {% endfor %}
+    </ul>
+
+    <p>
+    {% blocktrans %}
+        Le montant de la réservation est de {{ formated_price }}€. Pour effectuer la paiment,
+        veuillez cliquer sur le bouton suivant:
+    {% endblocktrans %}
+    </p>
+
+    {{ form.render }}
+
+
+{% endblock %}

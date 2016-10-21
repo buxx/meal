@@ -1,5 +1,5 @@
 from copy import copy
-from datetime import timedelta
+from datetime import timedelta, datetime
 
 from django.conf import settings
 from django.db import IntegrityError
@@ -14,16 +14,21 @@ from django.urls import reverse_lazy
 from django.utils.decorators import method_decorator
 from django.views import generic
 from allauth.account.views import LoginView as BaseLoginView
+from django.views.decorators.csrf import csrf_exempt
 
 from meal.forms import CurrentUserForm
+from meal.forms import  PaymentForm
 from meal.forms import ChooseDaysForm
 from meal.forms import CreateDaysForm
 from meal.forms import CreateGroupForm
-from meal.models import User
+from meal.models import User, Transaction
 from meal.models import Reservation
 from meal.models import RESERVATION_STATE_WAITING_PAYMENT
 from meal.models import Day
 from meal.models import Group
+from meal.templatetags.meal_extras import format_price
+from meal_booking.utils import get_paypal_ipn_url
+from meal import pay  # Needed to connect signals
 
 
 class LoginView(BaseLoginView):
@@ -175,6 +180,8 @@ class ReservationsView(generic.FormView):
         return super().get_context_data(**kwargs)
 
     def form_valid(self, form):
+        # TODO: Validator in form: user must have group
+        # TODO: Template: message if not in group
         reservations = []
         for day in form.cleaned_data['days']:
             reservations.append(
@@ -189,6 +196,74 @@ class ReservationsView(generic.FormView):
         for reservation in reservations:
             reservation.save()
 
-        return redirect(reverse('reservations'))
+        return redirect(reverse('pay'))
 
-# TODO: Il y a des balises avant le html .. ?
+
+@csrf_exempt
+def return_to_reservations(request):
+    messages.add_message(
+        request,
+        level=messages.SUCCESS,
+        message=_('La demande de paiement à été reçue. '
+                  'Vos réservations vont être validées.'),
+    )
+    return redirect(reverse('reservations'))
+
+
+@csrf_exempt
+def cancel_to_reservations(request):
+    messages.add_message(
+        request,
+        level=messages.WARNING,
+        message=_('Le paiement n\' pas été enregistré'),
+    )
+    return redirect(reverse('reservations'))
+
+
+class PreparePaymentView(generic.TemplateView):
+    template_name = 'prepare_payment.html'
+
+    def get_context_data(self, **kwargs):
+        reservations = Reservation.objects.filter(
+            user=self.request.user,
+            state=RESERVATION_STATE_WAITING_PAYMENT,
+        ).all()
+
+        if not reservations:
+            return redirect(reverse('reservations'))
+
+        amount_in_cents = sum([r.price for r in reservations])
+
+        # Create related transaction
+        transaction = Transaction(
+            user=self.request.user,
+            price=amount_in_cents,
+            logs='{0}: {1}'.format(
+                str(datetime.utcnow()),
+                'CREATE',
+            )
+        )
+        transaction.save()
+
+        transaction.reservations = reservations
+        transaction.save()
+
+        # TODO: Creer qqpart un numero d'invoice qui liste les jours,
+        # sinon on peux ayer pour des reservation faites entre temps
+        form = PaymentForm(initial={
+            "business": settings.PAYPAL_BUSINESS_ID,
+            "amount": format_price(amount_in_cents),
+            "item_name": "Réservation de {0} jour(s)".format(len(reservations)),
+            "invoice": transaction.pk,
+            "notify_url": get_paypal_ipn_url(),
+            "return_url": self.request.build_absolute_uri(reverse('return_to_reservations')),
+            "cancel_return": self.request.build_absolute_uri(reverse('cancel_to_reservations')),
+            "currency_code": "EUR",
+        })
+
+        kwargs.update({
+            'form': form,
+            'reservations': reservations,
+            'amount': amount_in_cents,
+        })
+        return super().get_context_data(**kwargs)

@@ -29,6 +29,7 @@ SECRET_KEY = '-^-zm(-^^f^%o8bez-g!139&lzvv_z&#12wu73%s%-wk-5_o^e'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
+PAYPAL_TEST = True
 
 ALLOWED_HOSTS = []
 
@@ -50,6 +51,7 @@ INSTALLED_APPS = [
     'allauth.account',
     'allauth.socialaccount',
     'django_extensions',
+    'paypal.standard.ipn',
 ]
 
 MIDDLEWARE = [
@@ -159,7 +161,14 @@ SITE_ID = 1
 
 INTERNAL_IPS = ['127.0.0.1']
 
+SITE_BASE_URL = 'http://127.0.0.1:8000'
+PAYPAL_BASE_URL = SITE_BASE_URL
+PAYPAL_BUSINESS_ID = None
+
 try:
     from local_settings import *
 except ImportError:
     pass
+
+if not PAYPAL_BUSINESS_ID:
+    raise Exception('Please configure PAYPAL_BUSINESS_ID config')

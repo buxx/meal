@@ -2,6 +2,7 @@ from django import forms
 from django.contrib.admin.widgets import AdminDateWidget
 from django.core.exceptions import ValidationError
 from django.utils.translation import ugettext as _
+from paypal.standard.forms import PayPalPaymentsForm
 
 from meal.models import User
 from meal.models import Day
@@ -113,3 +114,7 @@ class ChooseDaysForm(forms.Form):
         widget=forms.CheckboxSelectMultiple,
     )
     # TODO: Car il ne faut pas réserver un jour ou il y a trop de monde, jour cancel, etc
+
+
+class PaymentForm(PayPalPaymentsForm):
+    pass

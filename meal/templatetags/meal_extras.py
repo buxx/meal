@@ -60,7 +60,19 @@ def reserved_or_trying(day_date: datetime, user: User) -> bool:
     )
 
 
+def format_price(price_in_cents: int):
+    return '{price:02}'.format(price=price_in_cents/100)
+
+
+def contains_waiting_payments(reservations: ['Reservation']) -> bool:
+    for reservation in reservations:
+        if reservation.state == RESERVATION_STATE_WAITING_PAYMENT:
+            return True
+    return False
+
 register.filter('to_date', to_date)
 register.filter('week_number', week_number)
 register.tag('assign', do_assign)
 register.filter('reserved_or_trying', reserved_or_trying)
+register.filter('format_price', format_price)
+register.filter('contains_waiting_payments', contains_waiting_payments)

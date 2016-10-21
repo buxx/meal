@@ -4,6 +4,9 @@ from django.contrib import admin
 import debug_toolbar
 
 from meal.views import EditCurrentUserView
+from meal.views import cancel_to_reservations
+from meal.views import return_to_reservations
+from meal.views import PreparePaymentView
 from meal.views import ReservationsView
 from meal.views import CreateDays
 from meal.views import LoginView
@@ -20,6 +23,10 @@ urlpatterns = [
     url(r'^accounts/', include('allauth.urls')),
     url(r'^accounts/profile/$', EditCurrentUserView.as_view(), name='edit_current_user'),
     url(r'^accounts/home/$', HomeView.as_view(), name='home'),
-    url(r'^accounts/group/create/', CreateGroupView.as_view(), name='create_group'),
-    url(r'^accounts/reservations/', ReservationsView.as_view(), name='reservations'),
+    url(r'^accounts/group/create/$', CreateGroupView.as_view(), name='create_group'),
+    url(r'^accounts/reservations/$', ReservationsView.as_view(), name='reservations'),
+    url(r'^accounts/reservations/return/$', return_to_reservations, name='return_to_reservations'),
+    url(r'^accounts/reservations/cancel/$', cancel_to_reservations, name='cancel_to_reservations'),
+    url(r'^accounts/pay/$', PreparePaymentView.as_view(), name='pay'),
+    url(r'^paypal/', include('paypal.standard.ipn.urls')),
 ]

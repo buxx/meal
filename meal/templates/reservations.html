@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load i18n %}
+{% load meal_extras %}
 
 {% block content %}
 
@@ -21,7 +22,6 @@
         <thead>
         <tr>
             <th></th>
-            <th>{% trans 'Prix' %}</th>
             <th>{% trans 'Status' %}</th>
         </tr>
         </thead>
@@ -34,12 +34,19 @@
             {% for reservation in reservations %}
                 <tr>
                     <th scope="row">{{ reservation.day.date }}</th>
-                    <td>{{ reservation.price }}</td>
                     <td>{{ reservation.state_str }}</td>
                 </tr>
             {% endfor %}
         {% endif %}
         </tbody>
     </table>
+
+    {% if reservations|contains_waiting_payments %}
+        <p>
+            Des réservations sont en attente de paiement, pour les valider veuillez
+            vous rendre sur la
+            <a href="{% url 'pay' %}">page de paiement</a>.
+        </p>
+    {% endif %}
 
 {% endblock %}

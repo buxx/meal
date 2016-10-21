@@ -5,8 +5,10 @@ django-apptemplates==1.2
 django-bootstrap3==7.1.0
 django-debug-toolbar==1.6
 django-extensions==1.7.4
+django-paypal==0.3.3
 oauthlib==2.0.0
 python3-openid==3.0.10
+pytz==2016.7
 requests==2.11.1
 requests-oauthlib==0.7.0
 six==1.10.0
