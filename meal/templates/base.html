@@ -1,16 +1,15 @@
 {% load bootstrap3 %}
 {% load i18n %}
-
-{# Load CSS and JavaScript #}
-{% bootstrap_css %}
-{% bootstrap_javascript %}
-
 <!DOCTYPE html>
 <html>
 <head>
     <title>{% block head_title %}{% endblock %}</title>
     {% block extra_head %}
     {% endblock %}
+    <script src="https://code.jquery.com/jquery-2.2.4.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
+    {# Load CSS and JavaScript #}
+    {% bootstrap_css %}
+    {% bootstrap_javascript %}
 </head>
 <body>
 {% block body %}
