@@ -1,3 +1,4 @@
+from ckeditor.widgets import CKEditorWidget
 from django import forms
 from django.contrib.admin.widgets import AdminDateWidget
 from django.core.exceptions import ValidationError
@@ -5,6 +6,7 @@ from django.utils.translation import ugettext as _
 from paypal.standard.forms import PayPalPaymentsForm
 
 from meal.models import User
+from meal.models import Menu
 from meal.models import Day
 from meal.models import Group
 from meal_booking.forms import ModelForm
@@ -125,3 +127,11 @@ class ContactForm(forms.Form):
         required=True,
         widget=forms.Textarea
     )
+
+
+class MenuForm(forms.ModelForm):
+    message = forms.CharField(widget=CKEditorWidget())
+
+    class Meta:
+        model = Menu
+        fields = ('start_day', 'message')

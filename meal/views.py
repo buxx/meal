@@ -23,6 +23,7 @@ from meal.forms import ChooseDaysForm
 from meal.forms import CreateDaysForm
 from meal.forms import CreateGroupForm
 from meal.models import User
+from meal.models import Menu
 from meal.models import Transaction
 from meal.models import ContactMessage
 from meal.models import Reservation
@@ -202,6 +203,7 @@ class ReservationsView(generic.FormView):
         return redirect(reverse('pay'))
 
 
+@login_required
 @csrf_exempt
 def return_to_reservations(request):
     messages.add_message(
@@ -213,6 +215,7 @@ def return_to_reservations(request):
     return redirect(reverse('reservations'))
 
 
+@login_required
 @csrf_exempt
 def cancel_to_reservations(request):
     messages.add_message(
@@ -223,6 +226,7 @@ def cancel_to_reservations(request):
     return redirect(reverse('reservations'))
 
 
+@method_decorator(login_required, 'dispatch')
 class PreparePaymentView(generic.TemplateView):
     template_name = 'prepare_payment.html'
 
@@ -272,6 +276,7 @@ class PreparePaymentView(generic.TemplateView):
         return super().get_context_data(**kwargs)
 
 
+@method_decorator(login_required, 'dispatch')
 class ContactView(generic.FormView):
     template_name = 'contact.html'
     form_class = ContactForm
@@ -292,3 +297,15 @@ class ContactView(generic.FormView):
             message=_('Le message à bien été enregistré et envoyé'),
         )
         return redirect(reverse('reservations'))
+
+
+@method_decorator(login_required, 'dispatch')
+class MenuListView(generic.ListView):
+    model = Menu
+    template_name = 'menu_list.html'
+
+
+@method_decorator(login_required, 'dispatch')
+class MenuDetailView(generic.DetailView):
+    model = Menu
+    template_name = 'menu_detail.html'

@@ -187,7 +187,8 @@ class Transaction(models.Model):
 class ContactMessage(models.Model):
     created = models.DateTimeField(
         default=datetime.now,
-        blank=True,
+        blank=False,
+        null=False,
     )
     user = models.ForeignKey(
         User,
@@ -203,3 +204,17 @@ class ContactMessage(models.Model):
 
     class Meta:
         ordering = ['-created']
+
+
+class Menu(models.Model):
+    start_day = models.DateField(
+        null=False,
+        blank=False,
+    )
+    message = models.TextField(
+        null=False,
+        blank=False,
+    )
+
+    class Meta:
+        ordering = ['-start_day']

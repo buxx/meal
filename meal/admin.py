@@ -1,7 +1,9 @@
 from django import forms
 from django.contrib import admin
 
+from meal.forms import MenuForm
 from meal.models import Group
+from meal.models import Menu
 from meal.models import ContactMessage
 from meal.models import Transaction
 from meal.models import Reservation
@@ -69,9 +71,20 @@ class ContactMessageAdmin(admin.ModelAdmin):
     )
     list_filter = ('created', 'user__first_name', 'user__last_name')
 
+
+class MenuAdmin(admin.ModelAdmin):
+    form = MenuForm
+    fields = ('start_day', 'message')
+    list_display = ('start_day',)
+    search_fields = (
+        'message',
+    )
+    list_filter = ('start_day',)
+
 admin.site.register(Group, GroupAdmin)
 admin.site.register(User, UserAdmin)
 admin.site.register(Day, DayAdmin)
 admin.site.register(Reservation, ReservationAdmin)
 admin.site.register(Transaction, TransactionAdmin)
 admin.site.register(ContactMessage, ContactMessageAdmin)
+admin.site.register(Menu, MenuAdmin)

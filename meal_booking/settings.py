@@ -52,6 +52,7 @@ INSTALLED_APPS = [
     'allauth.socialaccount',
     'django_extensions',
     'paypal.standard.ipn',
+    'ckeditor',
 ]
 
 MIDDLEWARE = [
@@ -137,6 +138,9 @@ AVAILABLE_DAYS = WEEK_DAYS = (
     DAY_JEU,
     DAY_VEN,
 )
+
+CKEDITOR_UPLOAD_PATH = "uploads/"
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.10/topics/i18n/

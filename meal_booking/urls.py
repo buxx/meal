@@ -4,6 +4,8 @@ from django.contrib import admin
 import debug_toolbar
 
 from meal.views import EditCurrentUserView
+from meal.views import MenuDetailView
+from meal.views import MenuListView
 from meal.views import ContactView
 from meal.views import cancel_to_reservations
 from meal.views import return_to_reservations
@@ -30,5 +32,8 @@ urlpatterns = [
     url(r'^accounts/reservations/cancel/$', cancel_to_reservations, name='cancel_to_reservations'),
     url(r'^accounts/pay/$', PreparePaymentView.as_view(), name='pay'),
     url(r'^account/contact/$', ContactView.as_view(), name='contact'),
+    url(r'^account/menu/list/$', MenuListView.as_view(), name='menu_list'),
+    url(r'^account/menu/(?P<pk>\d+)/$', MenuDetailView.as_view(), name='menu_detail'),
     url(r'^paypal/', include('paypal.standard.ipn.urls')),
+    url(r'^ckeditor/', include('ckeditor_uploader.urls')),
 ]

@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% load i18n %}
+
+{% block content %}
+
+    <h1>{% trans 'Les menus' %}</h1>
+
+    <ul>
+        {% for menu in object_list %}
+            <li>
+                <a href="{% url 'menu_detail' menu.pk %}">
+                    A partir du {{ menu.start_day }}
+                </a>
+            </li>
+        {% empty %}
+            <li>Pas encore de menu</li>
+        {% endfor %}
+    </ul>
+
+{% endblock %}
