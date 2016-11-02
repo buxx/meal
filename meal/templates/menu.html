@@ -20,6 +20,7 @@
             <li><a href="{% url 'home' %}">{% trans "Mon compte" %}</a></li>
             <li><a href="{% url 'reservations' %}">{% trans "Réservations" %}</a></li>
             <li><a href="{% url 'account_email' %}">{% trans "Changer d'email" %}</a></li>
+            <li><a href="{% url 'contact' %}">{% trans "Contact" %}</a></li>
             <li><a href="{% url 'account_logout' %}">{% trans "Se déconnecter" %}</a></li>
         {% else %}
             <li><a href="{% url 'account_login' %}">{% trans "S'identifier" %}</a></li>

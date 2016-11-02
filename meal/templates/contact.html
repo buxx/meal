@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% load i18n %}
+
+{% block content %}
+
+    <p>
+        {% blocktrans %}
+            Vous pouve également me contacter au numéro {{ phone_number }}.
+        {% endblocktrans %}
+    </p>
+
+    <form action="" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        {% include "include/form.html" with form=form %}
+
+        <button type="submit" class="btn btn-success">
+            {% trans "Envoyer le message" %}
+        </button>
+    </form>
+{% endblock %}

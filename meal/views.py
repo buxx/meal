@@ -17,11 +17,14 @@ from allauth.account.views import LoginView as BaseLoginView
 from django.views.decorators.csrf import csrf_exempt
 
 from meal.forms import CurrentUserForm
-from meal.forms import  PaymentForm
+from meal.forms import ContactForm
+from meal.forms import PaymentForm
 from meal.forms import ChooseDaysForm
 from meal.forms import CreateDaysForm
 from meal.forms import CreateGroupForm
-from meal.models import User, Transaction
+from meal.models import User
+from meal.models import Transaction
+from meal.models import ContactMessage
 from meal.models import Reservation
 from meal.models import RESERVATION_STATE_WAITING_PAYMENT
 from meal.models import Day
@@ -267,3 +270,25 @@ class PreparePaymentView(generic.TemplateView):
             'amount': amount_in_cents,
         })
         return super().get_context_data(**kwargs)
+
+
+class ContactView(generic.FormView):
+    template_name = 'contact.html'
+    form_class = ContactForm
+
+    def get_context_data(self, **kwargs):
+        kwargs['phone_number'] = settings.PHONE_NUMBER
+        return super().get_context_data(**kwargs)
+
+    def form_valid(self, form):
+        message = ContactMessage(
+            user=self.request.user,
+            message=form.cleaned_data['message'],
+        )
+        message.save()
+        messages.add_message(
+            self.request,
+            level=messages.SUCCESS,
+            message=_('Le message à bien été enregistré et envoyé'),
+        )
+        return redirect(reverse('reservations'))

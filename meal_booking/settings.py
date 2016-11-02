@@ -164,6 +164,7 @@ INTERNAL_IPS = ['127.0.0.1']
 SITE_BASE_URL = 'http://127.0.0.1:8000'
 PAYPAL_BASE_URL = SITE_BASE_URL
 PAYPAL_BUSINESS_ID = None
+PHONE_NUMBER = None
 
 try:
     from local_settings import *
@@ -172,3 +173,6 @@ except ImportError:
 
 if not PAYPAL_BUSINESS_ID:
     raise Exception('Please configure PAYPAL_BUSINESS_ID config')
+
+if not PHONE_NUMBER:
+    raise Exception('Please configure PHONE_NUMBER config')

@@ -18,6 +18,17 @@
 
     <h2>{% trans 'Réservations effectuées' %}</h2>
 
+    <p>
+        {% blocktrans %}
+            Pour demander une annulation de réservation, veuillez utiliser
+        {% endblocktrans %}
+        <a href="{% url 'contact' %}">
+            {% blocktrans %}
+                le formulaire de contact
+            {% endblocktrans %}
+        </a>.
+    </p>
+
     <table class="table table-bordered">
         <thead>
         <tr>

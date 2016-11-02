@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from django.utils.translation import ugettext as _
 from django.contrib.auth.models import AbstractUser
 from django.db import models
@@ -180,3 +182,24 @@ class Transaction(models.Model):
         related_name='transactions',
         verbose_name=_('IPNs'),
     )
+
+
+class ContactMessage(models.Model):
+    created = models.DateTimeField(
+        default=datetime.now,
+        blank=True,
+    )
+    user = models.ForeignKey(
+        User,
+        null=False,
+        blank=False,
+        related_name='messages',
+        verbose_name=_('Utilisateur'),
+    )
+    message = models.TextField(
+        null=False,
+        blank=False,
+    )
+
+    class Meta:
+        ordering = ['-created']

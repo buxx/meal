@@ -118,3 +118,10 @@ class ChooseDaysForm(forms.Form):
 
 class PaymentForm(PayPalPaymentsForm):
     pass
+
+
+class ContactForm(forms.Form):
+    message = forms.CharField(
+        required=True,
+        widget=forms.Textarea
+    )

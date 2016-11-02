@@ -2,6 +2,7 @@ from django import forms
 from django.contrib import admin
 
 from meal.models import Group
+from meal.models import ContactMessage
 from meal.models import Transaction
 from meal.models import Reservation
 from meal.models import User
@@ -55,8 +56,18 @@ class TransactionAdmin(admin.ModelAdmin):
     fields = ('user', 'status', 'paypal_status', 'price', 'reservations', 'ipns', 'logs')
     list_display = ('user', 'status', 'price')
 
+
+class ContactMessageAdmin(admin.ModelAdmin):
+    fields = ('created', 'user', 'message')
+    list_display = ('created', 'user')
+    search_fields = (
+        'user',
+        'message',
+    )
+
 admin.site.register(Group, GroupAdmin)
 admin.site.register(User, UserAdmin)
 admin.site.register(Day, DayAdmin)
 admin.site.register(Reservation, ReservationAdmin)
 admin.site.register(Transaction, TransactionAdmin)
+admin.site.register(ContactMessage, ContactMessageAdmin)
