@@ -44,17 +44,20 @@ class DayAdmin(admin.ModelAdmin):
     search_fields = (
         'date',
     )
+    list_filter = ('date', 'cancelled', 'price')
 
 
 class ReservationAdmin(admin.ModelAdmin):
     fields = ('day', 'user', 'state', 'price')
     list_display = ('day', 'user', 'state', 'price')
+    list_filter = ('day__date', 'user__first_name', 'user__last_name', 'state', 'price')
     #  TODO: utiliser un champ date dans le day
 
 
 class TransactionAdmin(admin.ModelAdmin):
     fields = ('user', 'status', 'paypal_status', 'price', 'reservations', 'ipns', 'logs')
     list_display = ('user', 'status', 'price')
+    list_filter = ('user__first_name', 'user__last_name', 'status', 'price')
 
 
 class ContactMessageAdmin(admin.ModelAdmin):
@@ -64,6 +67,7 @@ class ContactMessageAdmin(admin.ModelAdmin):
         'user',
         'message',
     )
+    list_filter = ('created', 'user__first_name', 'user__last_name')
 
 admin.site.register(Group, GroupAdmin)
 admin.site.register(User, UserAdmin)
