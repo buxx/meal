@@ -105,17 +105,24 @@ class CreateDaysForm(DaysRangeForm):
 
 class ChooseDaysForm(forms.Form):
     days = forms.ModelMultipleChoiceField(
-        # TODO: la query set doit exclure les cancelled et ceux ou il
-        # y a count(reservations) > où réservation sont valides
-        # TODO: Il faut aussi se debrouiller pour avoir que 2
-        # semaine dans le futur
-        queryset=Day.objects.filter(
-            cancelled=False,
-        ),
+        queryset=Day.objects.none(),  # Will be replaced in __init__
         required=True,
         widget=forms.CheckboxSelectMultiple,
     )
-    # TODO: Car il ne faut pas réserver un jour ou il y a trop de monde, jour cancel, etc
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        current_week_strftime = datetime.utcnow().strftime("%Y-W%W-1")
+        current_week_datetime = datetime.strptime(current_week_strftime, "%Y-W%W-%w")
+        three_weeks_datetime = current_week_datetime + timedelta(days=20)
+
+        # TODO: Exclure les jours complets
+        self.fields['days'].queryset = Day.objects.filter(
+            cancelled=False,
+            date__gte=current_week_datetime,
+            date__lte=three_weeks_datetime,
+        )
 
 
 class PaymentForm(PayPalPaymentsForm):
