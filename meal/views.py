@@ -184,8 +184,6 @@ class ReservationsView(generic.FormView):
         return super().get_context_data(**kwargs)
 
     def form_valid(self, form):
-        # TODO: Validator in form: user must have group
-        # TODO: Template: message if not in group
         reservations = []
         for day in form.cleaned_data['days']:
             reservations.append(
