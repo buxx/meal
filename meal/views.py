@@ -202,6 +202,18 @@ class ReservationsView(generic.FormView):
 
         return redirect(reverse('pay'))
 
+    def post(self, request, *args, **kwargs):
+        if not self.request.user.group:
+            messages.add_message(
+                self.request,
+                level=messages.ERROR,
+                message=_('Vous devez appartenir à un groupe pour '
+                          'pouvoir effectuer une réservation'),
+            )
+            form = self.get_form()
+            return self.form_invalid(form)
+        return super().post(request, *args, **kwargs)
+
 
 @login_required
 @csrf_exempt

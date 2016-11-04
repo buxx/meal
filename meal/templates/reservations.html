@@ -9,6 +9,13 @@
     <form action="" method="post" enctype="multipart/form-data">
         {% csrf_token %}
 
+        {% if not user.group %}
+            <div class="alert alert-warning">
+              <strong>Attention!</strong>
+                {% trans 'Vous devez préalablement choisir un groupe dans la rubrique "Mon compte"' %}
+            </div>
+        {% endif %}
+
         {% include "include/form.html" with form=form field_template='include/reservations_field.html' %}
 
         <button type="submit" class="btn btn-success">
