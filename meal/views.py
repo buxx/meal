@@ -32,6 +32,7 @@ from meal.models import Day
 from meal.models import Group
 from meal.templatetags.meal_extras import format_price
 from meal_booking.utils import get_paypal_ipn_url
+from meal_booking.utils import get_complete_day_id_list
 from meal import pay  # Needed to connect signals
 
 
@@ -180,7 +181,10 @@ class ReservationsView(generic.FormView):
     template_name = 'reservations.html'
 
     def get_context_data(self, **kwargs):
+        max_reservation_day_id_list = get_complete_day_id_list()
+
         kwargs['reservations'] = self.request.user.reservations.all()
+        kwargs['max_reservation_day_id_list'] = list(max_reservation_day_id_list)
         return super().get_context_data(**kwargs)
 
     def form_valid(self, form):

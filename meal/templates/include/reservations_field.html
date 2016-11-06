@@ -33,10 +33,16 @@
                        id="day_{{ choice.choice_value }}"
                        {% if day_date|reserved_or_trying:user %}checked{% endif %}
                        {% if day_date|reserved_or_trying:user %}disabled{% endif %}
+                       {% if choice.choice_value|to_int in max_reservation_day_id_list %}disabled{% endif %}
                        value="{{ choice.choice_value }}" />
-                <label for="day_{{ choice.choice_value }}">
+                <label for="day_{{ choice.choice_value }}"
+                       class="day {% if choice.choice_value|to_int in max_reservation_day_id_list %}complete{% endif %}"
+                >
                     {{ day_date|date:"l d M Y" }}
                 </label>
+                {% if choice.choice_value|to_int in max_reservation_day_id_list %}
+                    <span class="complete">COMPLET</span>
+                {% endif %}
             </li>
 
             {% assign previous_week_number week_number %}

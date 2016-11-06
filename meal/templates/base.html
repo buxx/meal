@@ -10,6 +10,15 @@
     {# Load CSS and JavaScript #}
     {% bootstrap_css %}
     {% bootstrap_javascript %}
+    <style>
+        .day.complete {
+            color: silver;
+            margin-bottom: 0px;
+        }
+        span.complete {
+            font-size: 12px;
+        }
+    </style>
 </head>
 <body>
 {% block body %}

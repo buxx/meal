@@ -1,4 +1,5 @@
 from django.conf import settings
+from django.db.models import Count
 from django.urls import reverse
 from django.utils.translation import ugettext_lazy as _
 
@@ -27,3 +28,12 @@ def get_paypal_ipn_url():
         settings.PAYPAL_BASE_URL,
         reverse('paypal-ipn'),
     )
+
+
+def get_complete_day_id_list() -> [int]:
+    from meal.models import Reservation
+    return Reservation.objects \
+        .values('day_id') \
+        .annotate(cnt=Count('id')) \
+        .filter(cnt__gte=settings.MAXIMUM_RESERVATION_PER_DAY) \
+        .values_list('day_id', flat=True)

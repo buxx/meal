@@ -1,3 +1,5 @@
+from datetime import datetime, timedelta
+
 from ckeditor.widgets import CKEditorWidget
 from django import forms
 from django.contrib.admin.widgets import AdminDateWidget
@@ -12,6 +14,7 @@ from meal.models import Group
 from meal_booking.forms import ModelForm
 from meal_booking.forms import RequiredFieldsMixin
 from meal_booking.utils import WEEK_DAYS
+from meal_booking.utils import get_complete_day_id_list
 
 
 class CurrentUserForm(RequiredFieldsMixin, ModelForm):
@@ -117,12 +120,27 @@ class ChooseDaysForm(forms.Form):
         current_week_datetime = datetime.strptime(current_week_strftime, "%Y-W%W-%w")
         three_weeks_datetime = current_week_datetime + timedelta(days=20)
 
-        # TODO: Exclure les jours complets
-        self.fields['days'].queryset = Day.objects.filter(
-            cancelled=False,
-            date__gte=current_week_datetime,
-            date__lte=three_weeks_datetime,
-        )
+        self.fields['days'].queryset = Day.objects\
+            .filter(
+                cancelled=False,
+                date__gte=current_week_datetime,
+                date__lte=three_weeks_datetime,
+            )
+
+    def clean(self):
+        days = self.cleaned_data['days']
+        complete_day_id_list = get_complete_day_id_list()
+        complete_errors = []
+
+        if days:
+            for day in days:
+                if day.id in complete_day_id_list:
+                    complete_errors.append(ValidationError(
+                        'Le jour {0} est déjà complet'.format(day.date)
+                    ))
+
+        if complete_errors:
+            raise ValidationError(complete_errors)
 
 
 class PaymentForm(PayPalPaymentsForm):
