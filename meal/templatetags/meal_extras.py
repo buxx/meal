@@ -1,3 +1,4 @@
+import json
 from datetime import datetime
 
 from django import template
@@ -70,6 +71,14 @@ def contains_waiting_payments(reservations: ['Reservation']) -> bool:
             return True
     return False
 
+
+def from_json(value: str):
+    return json.loads(value)
+
+
+def access(dict_: dict, key):
+    return dict_[key]
+
 register.filter('to_date', to_date)
 register.filter('week_number', week_number)
 register.tag('assign', do_assign)
@@ -77,3 +86,5 @@ register.filter('reserved_or_trying', reserved_or_trying)
 register.filter('format_price', format_price)
 register.filter('contains_waiting_payments', contains_waiting_payments)
 register.filter('to_int', lambda v: int(v))
+register.filter('from_json', from_json)
+register.filter('access', access)

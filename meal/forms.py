@@ -112,6 +112,9 @@ class ChooseDaysForm(forms.Form):
         required=True,
         widget=forms.CheckboxSelectMultiple,
     )
+    accept_conditions = forms.BooleanField(
+        required=True,
+    )
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)

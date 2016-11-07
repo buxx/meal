@@ -170,6 +170,7 @@ SITE_BASE_URL = 'http://127.0.0.1:8000'
 PAYPAL_BASE_URL = SITE_BASE_URL
 PAYPAL_BUSINESS_ID = None
 PHONE_NUMBER = None
+CONDITIONS_URL = None
 
 try:
     from local_settings import *
@@ -181,3 +182,6 @@ if not PAYPAL_BUSINESS_ID:
 
 if not PHONE_NUMBER:
     raise Exception('Please configure PHONE_NUMBER config')
+
+if not CONDITIONS_URL:
+    raise Exception('Please configure CONDITIONS_URL config')

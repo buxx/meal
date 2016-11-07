@@ -185,6 +185,7 @@ class ReservationsView(generic.FormView):
 
         kwargs['reservations'] = self.request.user.reservations.all()
         kwargs['max_reservation_day_id_list'] = list(max_reservation_day_id_list)
+        kwargs['conditions_url'] = settings.CONDITIONS_URL
         return super().get_context_data(**kwargs)
 
     def form_valid(self, form):

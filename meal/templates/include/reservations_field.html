@@ -31,7 +31,7 @@
                 <input type="checkbox"
                        name="{{ field.name }}"
                        id="day_{{ choice.choice_value }}"
-                       {% if day_date|reserved_or_trying:user %}checked{% endif %}
+                       {% if day_date|reserved_or_trying:user or choice.choice_value in form.data.days %}checked{% endif %}
                        {% if day_date|reserved_or_trying:user %}disabled{% endif %}
                        {% if choice.choice_value|to_int in max_reservation_day_id_list %}disabled{% endif %}
                        value="{{ choice.choice_value }}" />

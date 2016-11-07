@@ -1,0 +1,12 @@
+{% load i18n %}
+
+<div class="row">
+
+    {{ field }}
+
+    <label for="id_accept_conditions">
+        {% trans "J'ai lu et accepte les conditions" %}
+        (<a target="_blank" href="{{ conditions_url }}">{% trans "Voir les conditions" %}</a>)
+    </label>
+
+</div>
