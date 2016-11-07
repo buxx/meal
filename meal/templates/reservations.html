@@ -52,7 +52,12 @@
             {% for reservation in reservations %}
                 <tr>
                     <th scope="row">{{ reservation.day.date }}</th>
-                    <td>{{ reservation.state_str }}</td>
+                    <td>
+                        {{ reservation.state_str }}
+                        {% if reservation.state == 'WAITING_PAYMENT' %}
+                            (<a href="{% url 'cancel_reservation' reservation.id %}">{% trans 'annuler' %}</a>)
+                        {% endif %}
+                    </td>
                 </tr>
             {% endfor %}
         {% endif %}

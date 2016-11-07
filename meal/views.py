@@ -2,6 +2,7 @@ from copy import copy
 from datetime import timedelta, datetime
 
 from django.conf import settings
+from django.http import Http404
 from django.db import IntegrityError
 from django.http import HttpResponseRedirect
 from django.utils.translation import ugettext as _
@@ -324,3 +325,33 @@ class MenuListView(generic.ListView):
 class MenuDetailView(generic.DetailView):
     model = Menu
     template_name = 'menu_detail.html'
+
+
+@method_decorator(login_required, 'dispatch')
+class CancelReservationView(generic.RedirectView):
+    url = reverse_lazy('reservations')
+
+    def get_redirect_url(self, *args, **kwargs):
+        reservation = Reservation.objects.get(pk=kwargs['pk'])
+
+        if reservation.user != self.request.user:
+            raise Http404
+
+        if reservation.state != RESERVATION_STATE_WAITING_PAYMENT:
+            messages.add_message(
+                self.request,
+                level=messages.ERROR,
+                message=_('Pour annuler cette réservation veuillez '
+                          'me contacter avec le formulaire de contact')
+            )
+            return super().get_redirect_url(*args, **kwargs)
+
+        reservation.delete()
+
+        messages.add_message(
+            self.request,
+            level=messages.SUCCESS,
+            message=_('Réservation annulée')
+        )
+
+        return super().get_redirect_url(*args, **kwargs)

@@ -5,6 +5,7 @@ import debug_toolbar
 
 from meal.views import EditCurrentUserView
 from meal.views import MenuDetailView
+from meal.views import CancelReservationView
 from meal.views import MenuListView
 from meal.views import ContactView
 from meal.views import cancel_to_reservations
@@ -30,6 +31,7 @@ urlpatterns = [
     url(r'^accounts/reservations/$', ReservationsView.as_view(), name='reservations'),
     url(r'^accounts/reservations/return/$', return_to_reservations, name='return_to_reservations'),
     url(r'^accounts/reservations/cancel/$', cancel_to_reservations, name='cancel_to_reservations'),
+    url(r'^account/reservation/cancel/(?P<pk>\d+)/$', CancelReservationView.as_view(), name='cancel_reservation'),
     url(r'^accounts/pay/$', PreparePaymentView.as_view(), name='pay'),
     url(r'^account/contact/$', ContactView.as_view(), name='contact'),
     url(r'^account/menu/list/$', MenuListView.as_view(), name='menu_list'),
