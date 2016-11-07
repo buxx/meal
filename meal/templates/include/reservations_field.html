@@ -18,6 +18,8 @@
         {% for choice in field %}
             {% assign day_date choice.choice_label|to_date %}
             {% assign week_number day_date|week_number %}
+            {# TODO: Make multiples queries #}
+            {% assign day field.field.choices.queryset|day_from_queryset:choice.choice_value %}
 
             {% if previous_week_number != week_number and previous_week_number != None %}
                 </ul>
@@ -42,6 +44,8 @@
                 </label>
                 {% if choice.choice_value|to_int in max_reservation_day_id_list %}
                     <span class="complete">COMPLET</span>
+                {% else %}
+                    {{ day.price|format_price }}
                 {% endif %}
             </li>
 

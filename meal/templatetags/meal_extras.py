@@ -79,6 +79,10 @@ def from_json(value: str):
 def access(dict_: dict, key):
     return dict_[key]
 
+
+def get_day_from_queryset(queryset, day_id):
+    return queryset.get(pk=day_id)
+
 register.filter('to_date', to_date)
 register.filter('week_number', week_number)
 register.tag('assign', do_assign)
@@ -88,3 +92,4 @@ register.filter('contains_waiting_payments', contains_waiting_payments)
 register.filter('to_int', lambda v: int(v))
 register.filter('from_json', from_json)
 register.filter('access', access)
+register.filter('day_from_queryset', get_day_from_queryset)
