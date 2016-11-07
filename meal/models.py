@@ -39,6 +39,13 @@ class User(AbstractUser):
         null=True,
     )
 
+    def get_full_name(self):
+        full_name = super().get_full_name()
+        if full_name:
+            return full_name
+
+        return self.email
+
 
 class Group(models.Model):
     name = models.CharField(
