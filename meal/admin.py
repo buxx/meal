@@ -52,7 +52,14 @@ class DayAdmin(admin.ModelAdmin):
 class ReservationAdmin(admin.ModelAdmin):
     fields = ('day', 'user', 'state', 'price')
     list_display = ('day', 'user', 'state', 'price')
-    list_filter = ('day__date', 'user__first_name', 'user__last_name', 'state', 'price')
+    list_filter = (
+        'day__date',
+        'user__first_name',
+        'user__last_name',
+        'state',
+        'price',
+        'user__group',
+    )
     #  TODO: utiliser un champ date dans le day
 
 
