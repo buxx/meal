@@ -41,10 +41,13 @@ class User(AbstractUser):
 
     def get_full_name(self):
         full_name = super().get_full_name()
-        if full_name:
+        if full_name.strip():
             return full_name
 
         return self.email
+
+    def __str__(self):
+        return self.get_full_name()
 
 
 class Group(models.Model):
