@@ -61,7 +61,6 @@ class ReservationAdmin(admin.ModelAdmin):
         'price',
         'user__group',
         'transactions__status',
-        'transactions',
     )
 
 
