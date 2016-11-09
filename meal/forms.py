@@ -7,7 +7,7 @@ from django.core.exceptions import ValidationError
 from django.utils.translation import ugettext as _
 from paypal.standard.forms import PayPalPaymentsForm
 
-from meal.models import User
+from meal.models import User, Reservation
 from meal.models import Menu
 from meal.models import Day
 from meal.models import Group
@@ -78,10 +78,54 @@ class DaysRangeForm(forms.Form):
         return super().clean()
 
 
-class CreateDaysForm(DaysRangeForm):
-    price = forms.IntegerField(
+class DayAdminForm(forms.ModelForm):
+    price_in_euros = forms.DecimalField(
         required=True,
-        label=_('Prix en CENTIMES'),
+        min_value=0,
+        decimal_places=2,
+        label=_('Prix en euros'),
+    )
+
+    class Meta:
+        model = Day
+        fields = ('date', 'cancelled')
+
+    def __init__(self, *args, **kwargs):
+        instance = kwargs.get('instance')
+        initial = kwargs.get('initial', {})
+        if instance:
+            initial['price_in_euros'] = instance.price / 100
+        kwargs['initial'] = initial
+        super().__init__(*args, **kwargs)
+
+
+class ReservationAdminForm(forms.ModelForm):
+    price_in_euros = forms.DecimalField(
+        required=True,
+        min_value=0,
+        decimal_places=2,
+        label=_('Prix en euros'),
+    )
+
+    class Meta:
+        model = Reservation
+        fields = ('day', 'user', 'state', 'price_in_euros')
+
+    def __init__(self, *args, **kwargs):
+        instance = kwargs.get('instance')
+        initial = kwargs.get('initial', {})
+        if instance:
+            initial['price_in_euros'] = instance.price / 100
+        kwargs['initial'] = initial
+        super().__init__(*args, **kwargs)
+
+
+class CreateDaysForm(DaysRangeForm):
+    price_in_euros = forms.DecimalField(
+        required=True,
+        min_value=0,
+        decimal_places=2,
+        label=_('Prix en euros'),
     )
 
     def clean(self):

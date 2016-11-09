@@ -131,7 +131,7 @@ class CreateDays(generic.FormView):
 
             days.append(Day(
                 date=current_date,
-                price=form.cleaned_data['price'],
+                price=form.cleaned_data['price_in_euros'] * 100,
             ))
             current_date += one_day
 

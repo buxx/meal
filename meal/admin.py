@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib import admin
 
-from meal.forms import MenuForm
+from meal.forms import MenuForm, DayAdminForm, ReservationAdminForm
 from meal.models import Group
 from meal.models import Menu
 from meal.models import ContactMessage
@@ -41,27 +41,36 @@ class UserAdmin(admin.ModelAdmin):
 
 
 class DayAdmin(admin.ModelAdmin):
-    fields = ('date', 'cancelled', 'price')
-    list_display = ('date', 'active', 'price')
+    fields = ('date', 'price_in_euros', 'cancelled')
+    list_display = ('date', 'active', 'price_in_euros')
     search_fields = (
         'date',
     )
-    list_filter = ('date', 'cancelled', 'price')
+    list_filter = ('date', 'cancelled')
+    form = DayAdminForm
+
+    def save_model(self, request, obj, form, change):
+        obj.price = form.cleaned_data['price_in_euros'] * 100
+        obj.save()
 
 
 class ReservationAdmin(admin.ModelAdmin):
     #  TODO: utiliser un champ date dans le day
-    fields = ('day', 'user', 'state', 'price')
-    list_display = ('day', 'user', 'state', 'transactions_resume', 'price')
+    fields = ('day', 'user', 'state', 'price_in_euros')
+    list_display = ('day', 'user', 'state', 'transactions_resume', 'price_in_euros')
     list_filter = (
         'day__date',
         'user__first_name',
         'user__last_name',
         'state',
-        'price',
         'user__group',
         'transactions__status',
     )
+    form = ReservationAdminForm
+
+    def save_model(self, request, obj, form, change):
+        obj.price = form.cleaned_data['price_in_euros'] * 100
+        obj.save()
 
 
 class TransactionAdmin(admin.ModelAdmin):

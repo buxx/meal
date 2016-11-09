@@ -104,6 +104,10 @@ class Day(models.Model):
     def active(self):
         return not self.cancelled
 
+    @property
+    def price_in_euros(self):
+        return self.price / 100
+
     def __str__(self):
         return str(self.date)
 
@@ -159,6 +163,10 @@ class Reservation(models.Model):
             )
 
         return ', '.join(transaction_resume_list)
+
+    @property
+    def price_in_euros(self):
+        return self.price / 100
 
 
 class Transaction(models.Model):
