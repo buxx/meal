@@ -50,8 +50,9 @@ class DayAdmin(admin.ModelAdmin):
 
 
 class ReservationAdmin(admin.ModelAdmin):
+    #  TODO: utiliser un champ date dans le day
     fields = ('day', 'user', 'state', 'price')
-    list_display = ('day', 'user', 'state', 'price')
+    list_display = ('day', 'user', 'state', 'transactions_resume', 'price')
     list_filter = (
         'day__date',
         'user__first_name',
@@ -59,8 +60,9 @@ class ReservationAdmin(admin.ModelAdmin):
         'state',
         'price',
         'user__group',
+        'transactions__status',
+        'transactions',
     )
-    #  TODO: utiliser un champ date dans le day
 
 
 class TransactionAdmin(admin.ModelAdmin):

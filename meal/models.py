@@ -150,8 +150,23 @@ class Reservation(models.Model):
     def state_str(self):
         return dict(RESERVATION_STATES)[self.state]
 
+    @property
+    def transactions_resume(self) -> str:
+        transaction_resume_list = []
+        for transaction in self.transactions.all():
+            transaction_resume_list.append(
+                dict(TRANSACTION_STATUSES)[transaction.status],
+            )
+
+        return ', '.join(transaction_resume_list)
+
 
 class Transaction(models.Model):
+    created = models.DateTimeField(
+        default=datetime.utcnow,
+        blank=False,
+        null=False,
+    )
     user = models.ForeignKey(
         User,
         null=False,
@@ -193,10 +208,17 @@ class Transaction(models.Model):
         verbose_name=_('IPNs'),
     )
 
+    def __str__(self):
+        return '{0}: {1} ({2})'.format(
+            str(self.user),
+            str(self.created.strftime('%Y-%m-%d %H:%M:%S')),
+            dict(TRANSACTION_STATUSES)[self.status],
+        )
+
 
 class ContactMessage(models.Model):
     created = models.DateTimeField(
-        default=datetime.now,
+        default=datetime.utcnow,
         blank=False,
         null=False,
     )
