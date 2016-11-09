@@ -5,6 +5,12 @@
 
     <h1>{% trans 'Les menus' %}</h1>
 
+    <p>
+        {% blocktrans %}
+            Veuillez noter que les menus sont susceptible d'évoluer (en fonction des produits du marché disponible par exemple).
+        {% endblocktrans %}
+    </p>
+
     <ul>
         {% for menu in object_list %}
             <li>
