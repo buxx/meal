@@ -38,7 +38,8 @@
                        {% if choice.choice_value|to_int in max_reservation_day_id_list %}disabled{% endif %}
                        value="{{ choice.choice_value }}" />
                 <label for="day_{{ choice.choice_value }}"
-                       class="day {% if choice.choice_value|to_int in max_reservation_day_id_list %}complete{% endif %}"
+                       {% if day.special %}title="{% trans 'Menu spécial: voir le menu' %}"{% endif %}
+                       class="day {% if choice.choice_value|to_int in max_reservation_day_id_list %}complete{% endif %}{% if day.special %} special{% endif %}"
                 >
                     {{ day_date|date:"l d M Y" }}
                 </label>

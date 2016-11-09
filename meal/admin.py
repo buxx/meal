@@ -41,7 +41,7 @@ class UserAdmin(admin.ModelAdmin):
 
 
 class DayAdmin(admin.ModelAdmin):
-    fields = ('date', 'price_in_euros', 'cancelled')
+    fields = ('date', 'price_in_euros', 'cancelled', 'special')
     list_display = ('date', 'active', 'price_in_euros')
     search_fields = (
         'date',

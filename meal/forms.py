@@ -88,7 +88,7 @@ class DayAdminForm(forms.ModelForm):
 
     class Meta:
         model = Day
-        fields = ('date', 'cancelled')
+        fields = ('date', 'cancelled', 'special')
 
     def __init__(self, *args, **kwargs):
         instance = kwargs.get('instance')

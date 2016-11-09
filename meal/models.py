@@ -96,6 +96,11 @@ class Day(models.Model):
         blank=False,
         verbose_name=_('Prix en CENTIMES'),
     )
+    special = models.BooleanField(
+        null=False,
+        default=False,
+        verbose_name=_('Est un jour spécial'),
+    )
 
     class Meta:
         ordering = ('date',)
